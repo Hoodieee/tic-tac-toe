@@ -8,6 +8,7 @@ const colorsLookup = {
 let board;
 let turn;
 let winner;
+let player;
 
 // Cached values
 const boardEls = Array.from(document.querySelectorAll('#board > div'));
@@ -29,6 +30,7 @@ function init() {
 
     turn = 1;
     winner = null;
+    player = 'X';
     render();
 }
     
@@ -38,10 +40,10 @@ function render() { //renders messages depending on status
        if(winner === 'T') {
            messageEl.innerHTML = 'It is a tie!';
        } else {
-           messageEl.innerHTML = `Congratulations <span style="color: ${colorsLookup[winner]}"> ${colorsLookup[winner].toUpperCase()}</span>! You have won!`;
+           messageEl.innerHTML = `Congratulations <span style="color: ${colorsLookup[winner]}"> ${colorsLookup[winner].toUpperCase()} Player ${player}</span>! You have won!`;
        }
     }else {
-        messageEl.innerHTML = `<span style="color: ${colorsLookup[turn]}">${colorsLookup[turn].toUpperCase()}</span>'s turn`;
+        messageEl.innerHTML = `<span style="color: ${colorsLookup[turn]}">${colorsLookup[turn].toUpperCase()} Player ${player}</span>'s turn`;
     }
       
 }
@@ -72,22 +74,25 @@ function handleClick(evt){
         board[boxId] = turn;
         getWinner();
         turn *= -1;
+        if (winner) turn = winner;
+        getPlayer();
         userChange.setAttribute("href", `css/${colorsLookup[turn]}.css`); //change css file to User css
         render();
     }   
 }
 
 // Handle a player clicking the replay button
-function resetBoard(evt) {
+function resetBoard() {
     board.forEach(function(box, boxId) {
         const div = document.getElementById(`box${boxId}`); 
         div.style.backgroundColor= "";
         div.innerText = "";
-        
-
+        board[boxId] = null;
     });
     turn = 1;
-    userChange.setAttribute("href", `css/${colors[turn]}.css`); // change css file back to starting player user css
+    winner = null;
+    userChange.setAttribute("href", `css/${colorsLookup[turn]}.css`); // change css file back to starting player user css
+    renderBoard();
     init();
     
     
@@ -142,4 +147,14 @@ function checkTie() {  // check for tie by setting starting value of total squar
         }             
     });
     if (gridValue === 0  && !winner) winner = 'T';
+}
+
+function getPlayer() {
+    if (turn === 1) {
+        player = 'X';
+    }
+    else if (turn === -1) {
+        player = 'O';
+    }
+
 }
