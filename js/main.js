@@ -13,11 +13,14 @@ let player;
 // Cached values
 const boardEls = Array.from(document.querySelectorAll('#board > div'));
 const messageEl = document.getElementById('message'); //get element to display message
-const userChange = document.getElementById('userCss'); //getting element to switch between css files to change highlight color
+
 
 // Event Listeners
 document.getElementById('board').addEventListener('click', handleClick);
 document.getElementById('reset').addEventListener('click', resetBoard);
+document.getElementById('board').addEventListener('mouseover', mouseOver); // show player X or O on hover
+document.getElementById('board').addEventListener('mouseout', mouseOut);   // change back to transparent background
+
 
 // 	Initialize the state variables
 init();
@@ -54,7 +57,6 @@ function renderBoard() {
     //Render the tic tac toe board
     board.forEach(function(box, boxId) {
         const div = document.getElementById(`box${boxId}`); 
-        div.style.backgroundColor= colorsLookup[box]; 
         if (board[boxId] == 1) {
             div.innerText = 'X';
         } else if (board[boxId] == -1) {
@@ -76,7 +78,6 @@ function handleClick(evt){
         turn *= -1;
         if (winner) turn = winner;
         getPlayer();
-        userChange.setAttribute("href", `css/${colorsLookup[turn]}.css`); //change css file to User css
         render();
     }   
 }
@@ -91,7 +92,6 @@ function resetBoard() {
     });
     turn = 1;
     winner = null;
-    userChange.setAttribute("href", `css/${colorsLookup[turn]}.css`); // change css file back to starting player user css
     renderBoard();
     init();
     
@@ -156,5 +156,31 @@ function getPlayer() {
     else if (turn === -1) {
         player = 'O';
     }
+
+}
+
+function mouseOver(evt) { //shows player X or O on hover
+    const boxId = boardEls.indexOf(evt.target); // index location of box clicked and storing it in boxId variable
+    if (board[boxId] === 1 || board[boxId] === -1 || winner) {
+        return;
+    }else {
+        const div = document.getElementById(`box${boxId}`); 
+        div.innerText = player;
+        div.style.color = colorsLookup[turn];
+    }
+
+
+}
+
+function mouseOut(evt) { // goes back to original board
+    const boxId = boardEls.indexOf(evt.target); // index location of box clicked and storing it in boxId variable
+    if (board[boxId] === 1 || board[boxId] === -1 || winner) {
+        return;
+    }else {
+        const div = document.getElementById(`box${boxId}`); 
+        div.innerText = "";
+        div.style.color = "";
+    }
+
 
 }
