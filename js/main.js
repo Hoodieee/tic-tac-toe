@@ -13,6 +13,7 @@ let player;
 // Cached values
 const boardEls = Array.from(document.querySelectorAll('#board > div'));
 const messageEl = document.getElementById('message'); //get element to display message
+const bodyEl = document.querySelector('body');
 
 
 // Event Listeners
@@ -20,6 +21,7 @@ document.getElementById('board').addEventListener('click', handleClick);
 document.getElementById('reset').addEventListener('click', resetBoard);
 document.getElementById('board').addEventListener('mouseover', mouseOver); // show player X or O on hover
 document.getElementById('board').addEventListener('mouseout', mouseOut);   // change back to transparent background
+
 
 
 // 	Initialize the state variables
@@ -38,7 +40,8 @@ function init() {
 }
     
 function render() { //renders messages depending on status
-   renderBoard();
+    getBackground();
+    renderBoard();
    if (winner) {
        if(winner === 'T') {
            messageEl.innerHTML = 'It is a tie!';
@@ -93,6 +96,7 @@ function resetBoard() {
     turn = 1;
     winner = null;
     renderBoard();
+    getBackground();
     init();
     
     
@@ -183,4 +187,15 @@ function mouseOut(evt) { // goes back to original board
     }
 
 
+}
+
+function getBackground() {
+    if(winner == 1){
+        bodyEl.style.backgroundImage = "url('https://i.imgur.com/WbTbLgA.jpg')";
+    } else if(winner == -1){
+        bodyEl.style.backgroundImage = "url('https://i.imgur.com/RChtCPS.jpg')";
+    } else {
+        bodyEl.style.backgroundImage = "url('https://i.imgur.com/ywr02KX.jpg')";
+        
+    }
 }
