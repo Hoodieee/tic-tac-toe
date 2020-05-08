@@ -1,3 +1,4 @@
+ 
 // Define required constants
 const colorsLookup = {
     '1': 'red', // player X
@@ -14,6 +15,7 @@ let player;
 const boardEls = Array.from(document.querySelectorAll('#board > div'));
 const messageEl = document.getElementById('message'); //get element to display message
 const bodyEl = document.querySelector('body');
+const backgroundEl = document.getElementById('background');
 
 
 // Event Listeners
@@ -191,11 +193,11 @@ function mouseOut(evt) { // goes back to original board
 
 function getBackground() {
     if(winner == 1){
-        bodyEl.style.backgroundImage = "url('https://i.imgur.com/WbTbLgA.jpg')";
+        backgroundEl.style.backgroundImage = "url('https://i.imgur.com/CD5PkFw.jpg')";
     } else if(winner == -1){
-        bodyEl.style.backgroundImage = "url('https://i.imgur.com/RChtCPS.jpg')";
+        backgroundEl.style.backgroundImage = "url('https://i.imgur.com/vqzlruh.jpg')";
     } else {
-        bodyEl.style.backgroundImage = "url('https://i.imgur.com/ywr02KX.jpg')";
+        backgroundEl.style.backgroundImage = "url('https://i.imgur.com/IkA1ug7.jpg')";
         
     }
 }
